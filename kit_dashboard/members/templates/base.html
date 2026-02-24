@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Broadcast Kits{% endblock %}</title>
+
+  <!-- Tailwind first -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Your styles (load after Tailwind so you can override) -->
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+  <!-- 🧭 Navigation bar -->
+  <nav class="bg-neutral-900 text-white p-4 flex justify-between items-center">
+      <div>
+      <a href="{% url 'dashboard' %}" class="text-lg hover:text-gray-300 font-stolzl">Dashboard</a>
+    </div>
+
+    <div class="pr-12 flex justify-center items-center">
+      <img src="{% static 'logos/Cosm_Wide_White.png' %}" alt="Your Logo" class="h-12 w-auto">
+    </div>
+
+    <div class="flex items-center gap-4">
+      {% if user.is_authenticated %}
+        <span>Hi, {{ user.username }}!</span>
+        <form action="{% url 'logout' %}" method="post" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm font-stolzl">
+            Logout
+          </button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="hover:underline text-sm">Login</a>
+        <a href="{% url 'signup' %}" class="hover:underline text-sm">Sign Up</a>
+      {% endif %}
+    </div>
+  </nav>
+  <!-- Page content -->
+  <main class="flex-1 container mx-auto p-6">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-gray-300 text-center py-3 mt-auto font-stolzl">
+    <p class="text-sm">&copy; 2025 Broadcast Kit Tracker</p>
+  </footer>
+
+</body>
+</html>

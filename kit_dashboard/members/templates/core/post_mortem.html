@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Post Mortem{% endblock %}
+
+{% block content %}
+<div class="dash">
+
+  <!-- Sidebar -->
+  <aside class="dash__sidebar">
+    <button class="dash__menu" aria-label="menu">≡</button>
+  </aside>
+
+  <!-- Main -->
+  <section class="dash__main">
+    <h1 class="dash__title">Post Mortem</h1>
+     <div class="postmort-card__outer">
+         <div class="postmort-card__top">
+             <span class="postmort-card__event">{{ pm.event_name }}</span>
+            <span class="postmort-card__kit">Kit {{ pm.kit_id }}</span>
+            <span class="postmort-card__time">
+              {{ pm.updated_at|default:pm.created_at|date:"M d, Y H:i" }}
+            </span>
+         </div>
+         <div class="postmort-card__small_inner">
+             <span class="postmort-card__info">EIC: {{ pm.name }}
+             </span>
+         </div>
+         <div class="postmort-card__small_inner">
+             <span class="postmort-card__info">Date: {{ pm.event_date }}
+             </span>
+         </div>
+         <div class="postmort-card__large_inner">
+             <span class="postmort-card__summary">Summary: {{ pm.summary }}
+             </span>
+         </div>
+     </div>
+  </section>
+
+</div>
+{% endblock %}

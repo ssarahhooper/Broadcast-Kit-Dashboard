@@ -1,0 +1,230 @@
+
+@font-face {
+  font-family: Stolzl; src: url('fonts/Stolzl-Regular.otf');
+}
+@font-face {
+  font-family: Stolzl;
+  font-weight: 600;
+  src: url('fonts/Stolzl-Medium.otf');
+}
+@font-face {
+  font-family: Stolzl;
+  font-weight: bold;
+  src: url('fonts/Stolzl-Bold.otf');
+}
+@font-face {
+  font-family: Monument;
+  src: url('fonts/MonumentExtended-Ultrabold.otf');
+}
+
+body {
+  font-family: Stolzl, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0;
+  padding: 0;
+}
+.font-monument {
+  font-family: Monument, sans-serif;
+}
+
+.font-stolzl {
+    font-family: Stolzl, sans-serif;
+}
+html, body {
+  background: #1e1e1e;   /* your dark background */
+  color: rgba(255,255,255,.92);
+  margin: 0;
+}
+/* ===== Dashboard layout (matches your mock) ===== */
+
+.dash{
+  min-height: calc(100vh - 120px); /* leaves room for nav/footer if you have them */
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* background like the mock */
+.dash__main{
+  padding-top: 12px;
+
+}
+
+.dash__title{
+  font-size: 44px;
+  letter-spacing: .2px;
+  margin: 10px 0 22px 0;
+  color: rgba(255,255,255,.92);
+}
+
+/* Sidebar */
+.dash__sidebar{
+  background: #3f3f3f;
+  border-radius: 18px;
+  height: 90vh;
+  padding: 18px;
+  margin-top: 100px;
+}
+
+.dash__menu{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 0;
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.9);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Grid of cards */
+.kit-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 28px;
+}
+
+/* Card frame */
+.kit-card{
+  background: #4a4a4a;
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+}
+
+/* Title row inside card */
+.kit-card__top{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.kit-card__event{
+  color: rgba(255,255,255,.9);
+  font-weight: 700;
+  font-size: 16px;
+}
+.kit-card__kit{
+  color: rgba(255,255,255,.70);
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.kit-card__time{
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Inner black panel */
+.kit-card__inner{
+  background: #121212;
+  border-radius: 14px;
+  padding: 14px;
+  min-height: 84px;
+  color: rgba(255,255,255,.85);
+
+  /* “few lines then cut off” look */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.kit-card-link{
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.kit-card-link:hover .kit-card{
+  transform: translateY(-2px);
+}
+.kit-card{
+  transition: transform .12s ease;
+}
+
+
+/* Post Mortem Page */
+/* Outer Grey */
+.postmort-card__outer{
+  background: #4a4a4a;
+  border-radius: 18px;
+  padding: 14px;
+  margin-right: 125px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+}
+/* Inner Grey Small */
+.postmort-card__small_inner{
+  background: #121212;
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 75px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: rgba(255,255,255,.85);
+}
+/* Inner Grey Large */
+.postmort-card__large_inner{
+  background: #121212;
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 700px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: rgba(255,255,255,.85);
+
+}
+/* Title row inside card */
+.postmort-card__top{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+.postmort-card__event{
+  color: rgba(255,255,255,.9);
+  font-weight: 700;
+  font-size: 40px;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+.postmort-card__kit{
+  color: rgba(255,255,255,.70);
+  font-weight: 300;
+  font-size: 40px;
+}
+.postmort-card__time{
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  white-space: nowrap;
+}
+/* post mort details */
+.postmort-card__info{
+  color: rgba(255,255,255,.65);
+  font-size: 25px;
+  white-space: nowrap;
+}
+.postmort-card__summary{
+  color: rgba(255,255,255,.65);
+  font-size: 25px;
+  white-space: nowrap;
+}
+
+
+/* Responsive: 2 columns then 1 */
+@media (max-width: 1100px){
+  .kit-grid{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+@media (max-width: 760px){
+  .dash{ grid-template-columns: 1fr; }
+  .dash__sidebar{ min-height: 80px; }
+  .kit-grid{ grid-template-columns: 1fr; }
+}
+

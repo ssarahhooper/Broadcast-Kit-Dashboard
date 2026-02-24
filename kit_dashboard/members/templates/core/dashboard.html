@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dash">
+
+  <!-- Main -->
+  <section class="dash__main">
+    <h1 class="dash__title">Dashboard</h1>
+
+    <div class="kit-grid">
+      {% for pm in recent_postmortems %}
+       <a href="{% url 'postmortem' pm.pk %}" class="kit-card-link">
+        <article class="kit-card">
+          <div class="kit-card__top">
+            <span class="kit-card__event">{{ pm.event_name }}</span>
+            <span class="kit-card__kit">Kit {{ pm.kit_id }}</span>
+            <span class="kit-card__time">
+              {{ pm.updated_at|default:pm.created_at|date:"M d, Y H:i" }}
+            </span>
+          </div>
+
+          <div class="kit-card__inner">
+            {{ pm.summary|truncatechars:120 }}
+          </div>
+        </article>
+      {% empty %}
+        <!-- fallback placeholders so you can see the layout -->
+        {% for i in "123456789" %}
+          <article class="kit-card">
+            <div class="kit-card__top">
+              <span class="kit-card__kit">Kit {{ forloop.counter }}</span>
+              <span class="kit-card__time">—</span>
+            </div>
+            <div class="kit-card__inner"></div>
+          </article>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}
