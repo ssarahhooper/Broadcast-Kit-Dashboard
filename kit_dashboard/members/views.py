@@ -20,7 +20,7 @@ def dashboard(request):
         "kits": kits,
         'recent_postmortems': recent_postmortems})
 
-
+@login_required
 def kit_home(request, kit_id):
     recent_postmortems = PostMortem.objects.filter(kit_id=kit_id).order_by('-created_at')[:10]
     return render(request, "core/kit_home.html", {
