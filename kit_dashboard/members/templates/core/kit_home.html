@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Kit 1 Homepage{% endblock %}
 
 {% block content %}
 
@@ -38,6 +38,7 @@
 
     <div class="kit-grid">
       {% for pm in recent_postmortems %}
+      {% if pm.kit_id == kit_id %}
         <a href="{% url 'postmortem' pm.pk %}" class="kit-card-link">
           <article class="kit-card">
             <div class="kit-card__top">
@@ -53,6 +54,7 @@
             </div>
           </article>
         </a>
+      {% endif %}
       {% empty %}
         {% for i in "123456789" %}
           <a href="#" class="kit-card-link">
