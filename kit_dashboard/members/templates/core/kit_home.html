@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Kit 1 Homepage{% endblock %}
+
+{% block content %}
+
+<!-- ===== Dashboard Sidebar ===== -->
+<aside id="pageSidebar" class="page-sidebar" aria-hidden="true">
+  <button class="page-sidebar__close" type="button" onclick="closeSidebar()" aria-label="Close sidebar">×</button>
+
+  <nav class="page-sidebar__nav">
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="#">Calendar</a>
+    <a href="{% url 'kit_home' 1 %}">Kit 1</a>
+    <a href="{% url 'kit_home' 2 %}">Kit 2</a>
+    <a href="{% url 'kit_home' 3 %}">Kit 3</a>
+    <a href="#">Kit 4</a>
+    <a href="#">Kit 5</a>
+    <a href="#">Kit 6</a>
+    <a href="#">Kit 7</a>
+    <a href="#">Kit 8</a>
+    <a href="#">Kit 9</a>
+    <a href="#">Kit 10</a>
+    <a href="#">Kit 11</a>
+  </nav>
+</aside>
+
+<!-- Overlay -->
+<div id="pageOverlay" class="page-overlay" onclick="closeSidebar()" hidden></div>
+
+<!-- Hamburger (dashboard only) -->
+<button class="dash__menu dashboard-hamburger" type="button" onclick="openSidebar()" aria-label="Open sidebar">☰</button>
+
+<!-- ===== Dashboard Content ===== -->
+<div class="dash">
+  <section class="dash__main">
+    <h1 class="dash__title">Dashboard</h1>
+
+    <div class="kit-grid">
+      {% for pm in recent_postmortems %}
+      {% if pm.kit_id == kit_id %}
+        <a href="{% url 'postmortem' pm.pk %}" class="kit-card-link">
+          <article class="kit-card">
+            <div class="kit-card__top">
+              <span class="kit-card__event">{{ pm.event_name }}</span>
+              <span class="kit-card__kit">Kit {{ pm.kit_id }}</span>
+              <span class="kit-card__time">
+                {{ pm.updated_at|default:pm.created_at|date:"M d, Y H:i" }}
+              </span>
+            </div>
+
+            <div class="kit-card__inner">
+              {{ pm.summary|truncatechars:120 }}
+            </div>
+          </article>
+        </a>
+      {% endif %}
+      {% empty %}
+        {% for i in "123456789" %}
+          <a href="#" class="kit-card-link">
+            <article class="kit-card">
+              <div class="kit-card__top">
+                <span class="kit-card__kit">Kit {{ forloop.counter }}</span>
+                <span class="kit-card__time">—</span>
+              </div>
+              <div class="kit-card__inner"></div>
+            </article>
+          </a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<!-- ===== Page-scoped CSS (move to styles.css later if you want) ===== -->
+<style>
+  :root { --ps-w: 280px; }
+
+  /* Sidebar hidden by default */
+  .page-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--ps-w);
+    height: 100vh;
+    background: #111;
+    padding-top: 70px; /* keep clear of the navbar */
+    transform: translateX(-110%);
+    transition: transform 0.32s ease;
+    z-index: 2200;
+    box-shadow: 12px 0 28px rgba(0,0,0,.45);
+  }
+
+  /* Sidebar open */
+  body.sidebar-open .page-sidebar {
+    transform: translateX(0);
+  }
+
+  .page-sidebar__close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .page-sidebar__nav a {
+    display: block;
+    padding: 12px 18px 12px 28px;
+    color: rgba(255,255,255,.8);
+    text-decoration: none;
+  }
+  .page-sidebar__nav a:hover {
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.95);
+  }
+
+  /* Overlay */
+  .page-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 2100;
+  }
+
+  /* Hide dashboard hamburger when sidebar is open */
+  body.sidebar-open .dashboard-hamburger {
+    display: none !important;
+  }
+
+  /* Push dashboard content on desktop only */
+  @media (min-width: 761px) {
+    body.sidebar-open .dash {
+      transform: translateX(var(--ps-w));
+      transition: transform 0.32s ease;
+    }
+  }
+
+  /* Mobile: overlay mode (no push) */
+  @media (max-width: 760px) {
+    :root { --ps-w: 85vw; }
+    body.sidebar-open .dash {
+      transform: none;
+    }
+  }
+</style>
+
+<!-- ===== Page-scoped JS ===== -->
+<script>
+  function openSidebar() {
+    document.body.classList.add("sidebar-open");
+
+    const overlay = document.getElementById("pageOverlay");
+    if (overlay) overlay.hidden = false;
+
+    const sidebar = document.getElementById("pageSidebar");
+    if (sidebar) sidebar.setAttribute("aria-hidden", "false");
+  }
+
+  function closeSidebar() {
+    document.body.classList.remove("sidebar-open");
+
+    const overlay = document.getElementById("pageOverlay");
+    if (overlay) overlay.hidden = true;
+
+    const sidebar = document.getElementById("pageSidebar");
+    if (sidebar) sidebar.setAttribute("aria-hidden", "true");
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeSidebar();
+  });
+</script>
+
+{% endblock %}
