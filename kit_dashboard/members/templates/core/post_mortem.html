@@ -2,12 +2,35 @@
 {% block title %}Post Mortem{% endblock %}
 
 {% block content %}
-<div class="dash">
+<!-- ===== Dashboard Sidebar ===== -->
+<aside id="pageSidebar" class="page-sidebar" aria-hidden="true">
+  <button class="page-sidebar__close" type="button" onclick="closeSidebar()" aria-label="Close sidebar">×</button>
 
-  <!-- Sidebar -->
-  <aside class="dash__sidebar">
-    <button class="dash__menu" aria-label="menu">≡</button>
-  </aside>
+  <nav class="page-sidebar__nav">
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="#">Calendar</a>
+    <a href="{% url 'kit_home' 1 %}">Kit 1</a>
+    <a href="{% url 'kit_home' 2 %}">Kit 2</a>
+    <a href="{% url 'kit_home' 3 %}">Kit 3</a>
+    <a href="{% url 'kit_home' 4 %}">Kit 4</a>
+    <a href="{% url 'kit_home' 5 %}">Kit 5</a>
+    <a href="{% url 'kit_home' 6 %}">Kit 6</a>
+    <a href="{% url 'kit_home' 7 %}">Kit 7</a>
+    <a href="{% url 'kit_home' 8 %}">Kit 8</a>
+    <a href="{% url 'kit_home' 9 %}">Kit 9</a>
+    <a href="{% url 'kit_home' 10 %}">Kit 10</a>
+    <a href="{% url 'kit_home' 11 %}">Kit 11</a>
+  </nav>
+</aside>
+
+<!-- Overlay -->
+<div id="pageOverlay" class="page-overlay" onclick="closeSidebar()" hidden></div>
+
+<!-- Hamburger (dashboard only) -->
+<button class="dash__menu dashboard-hamburger" type="button" onclick="openSidebar()" aria-label="Open sidebar">☰</button>
+
+
+<div class="dash">
 
   <!-- Main -->
   <section class="dash__main">

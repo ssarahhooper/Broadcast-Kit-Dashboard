@@ -21,6 +21,14 @@ def dashboard(request):
         'recent_postmortems': recent_postmortems})
 
 
+def kit_home(request, kit_id):
+    recent_postmortems = PostMortem.objects.filter(kit_id=kit_id).order_by('-created_at')[:10]
+    return render(request, "core/kit_home.html", {
+        "kit_id": kit_id,
+        "recent_postmortems": recent_postmortems,
+    })
+
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
