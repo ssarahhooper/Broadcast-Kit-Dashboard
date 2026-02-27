@@ -70,3 +70,7 @@ def postmortem(request, pk):
 
     # Always return a response on GET (and after any redirect)
     return render(request, "core/post_mortem.html", {"pm": pm})
+
+@login_required
+def calendar(request):
+    return render(request, "Calendar/calendar.html")

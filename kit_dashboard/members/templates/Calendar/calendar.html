@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{%  load static %}
+{% block title %}Kit Calendar{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'calendar.css' %}">
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'calendar.js' %}"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("initKitCalendar type:", typeof initKitCalendar);
+    console.log("monthYearLabel exists:", !!document.getElementById("monthYearLabel"));
+    console.log("kitcalHeader exists:", !!document.getElementById("kitcalHeader"));
+    console.log("kitcalGrid exists:", !!document.getElementById("kitcalGrid"));
+
+    initKitCalendar({
+      weekStartsOnSunday: true,
+      demoEvents: [
+        { kit: 2, start: "2026-02-21", end: "2026-02-22", color: "#f4e26f" },
+        { kit: 3, start: "2026-02-21", end: "2026-02-22", color: "#1e2bff" },
+      ]
+    });
+  });
+</script>
+
+{% endblock %}
+{% block content %}
+
+<!-- Sidebar -->
+<aside id="pageSidebar" class="page-sidebar" aria-hidden="true">
+  <button class="page-sidebar__close" type="button" onclick="closeSidebar()" aria-label="Close sidebar">×</button>
+  <nav class="page-sidebar__nav">
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="#">Calendar</a>
+    <a href="#">Kit 1</a><a href="#">Kit 2</a><a href="#">Kit 3</a><a href="#">Kit 4</a>
+    <a href="#">Kit 5</a><a href="#">Kit 6</a><a href="#">Kit 7</a><a href="#">Kit 8</a>
+    <a href="#">Kit 9</a><a href="#">Kit 10</a><a href="#">Kit 11</a>
+  </nav>
+</aside>
+<div id="pageOverlay" class="page-overlay" onclick="closeSidebar()" hidden></div>
+
+<div class="kitcal">
+
+  <!-- Toolbar -->
+  <div class="kitcal__toolbar">
+    <div class="kitcal__toolbarLeft">
+      <button class="calendar-hamburger" type="button" onclick="openSidebar()" aria-label="Open sidebar">☰</button>
+
+      <button class="kitcal__btn" type="button" id="prevWeekBtn" aria-label="Previous week">←</button>
+      <button class="kitcal__btn" type="button" id="todayBtn">Today</button>
+      <button class="kitcal__btn" type="button" id="nextWeekBtn" aria-label="Next week">→</button>
+
+      <div class="kitcal__title" id="monthYearLabel">—</div>
+    </div>
+  </div>
+
+  <!-- Calendar card -->
+  <section class="kitcal__card">
+    <div id="kitcalHeader" class="kitcal__header"></div>
+    <div class="kitcal__gridWrap">
+      <div id="kitcalGrid" class="kitcal__grid"></div>
+    </div>
+  </section>
+</div>
+
+<style>
+
+  /* ===== Slide-out sidebar ===== */
+  .page-sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--ps-w);
+    height: 100vh;
+    background: #111;
+    padding-top: 70px;
+    transform: translateX(-110%);
+    transition: transform 0.32s ease;
+    z-index: 2200;
+    box-shadow: 12px 0 28px rgba(0,0,0,.45);
+  }
+  body.sidebar-open .page-sidebar { transform: translateX(0); }
+
+  .page-sidebar__close {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .page-sidebar__nav a {
+    display: block;
+    padding: 12px 18px 12px 28px;
+    color: rgba(255,255,255,.8);
+    text-decoration: none;
+  }
+  .page-sidebar__nav a:hover {
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.95);
+  }
+
+  .page-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 2100;
+  }
+
+  .calendar-hamburger {
+    width: 44px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.35);
+    color: rgba(255,255,255,.9);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  body.sidebar-open .calendar-hamburger { display: none !important; }
+
+  @media (min-width: 761px) {
+    body.sidebar-open .kitcal { transform: translateX(var(--ps-w)); }
+  }
+  @media (max-width: 760px) {
+    :root { --ps-w: 85vw; }
+    body.sidebar-open .kitcal { transform: none; }
+  }
+
+
+</style>
+
+<script>
+  // ===== Sidebar JS =====
+  function openSidebar() {
+    document.body.classList.add("sidebar-open");
+    const overlay = document.getElementById("pageOverlay");
+    if (overlay) overlay.hidden = false;
+    const sidebar = document.getElementById("pageSidebar");
+    if (sidebar) sidebar.setAttribute("aria-hidden", "false");
+  }
+  function closeSidebar() {
+    document.body.classList.remove("sidebar-open");
+    const overlay = document.getElementById("pageOverlay");
+    if (overlay) overlay.hidden = true;
+    const sidebar = document.getElementById("pageSidebar");
+    if (sidebar) sidebar.setAttribute("aria-hidden", "true");
+  }
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSidebar(); });
+</script>
+{% endblock %}

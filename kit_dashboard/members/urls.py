@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path("postmortem/<int:pk>/", views.postmortem, name='postmortem'),
     path("kit/<int:kit_id>/", views.kit_home, name="kit_home"),
+    path('calendar/', views.calendar, name='calendar'),
 ]
 
 if settings.DEBUG:

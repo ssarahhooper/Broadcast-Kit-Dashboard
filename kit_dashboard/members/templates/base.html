@@ -7,9 +7,10 @@
 
   <!-- Tailwind first -->
   <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <!-- Your styles (load after Tailwind so you can override) -->
   <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -46,6 +47,7 @@
   <footer class="text-gray-300 text-center py-3 mt-auto font-stolzl">
     <p class="text-sm">&copy; 2025 Broadcast Kit Tracker</p>
   </footer>
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>
