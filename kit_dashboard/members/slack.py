@@ -4,7 +4,7 @@ from datetime import datetime
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from django.conf import settings
-from core.models import Kit, PostMortem
+from models import Kit, PostMortem
 
 # Slack setup
 client = WebClient(token=settings.SLACK_BOT_TOKEN)
