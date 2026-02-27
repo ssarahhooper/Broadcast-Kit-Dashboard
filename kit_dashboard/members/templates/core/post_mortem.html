@@ -33,19 +33,26 @@
 <div class="dash">
   <!-- Main -->
   <section class="dash__main">
-    <h1 class="dash__title">Post Mortem</h1>
      <div class="postmort-card__outer">
          <div class="postmort-card__top">
-             <span class="postmort-card__event">{{ pm.event_name }}</span>
             <span class="postmort-card__kit">Kit {{ pm.kit_id }}</span>
             <span class="postmort-card__time">
               {{ pm.updated_at|default:pm.created_at|date:"M d, Y H:i" }}
             </span>
          </div>
-         <div class="postmort-card__small_inner">
-             <span class="postmort-card__info">EIC: {{ pm.name }}
-             </span>
-         </div>
+         <div class="postmort-row">
+          <div class="postmort-card__small_inner">
+              <span class="postmort-card__info">
+                Event: {{ pm.event_name }}
+              </span>
+          </div>
+
+          <div class="postmort-card__small_inner">
+              <span class="postmort-card__info">
+                EIC: {{ pm.name }}
+              </span>
+          </div>
+        </div>
          <div class="postmort-card__small_inner">
              <span class="postmort-card__info">Date: {{ pm.event_date }}
              </span>
@@ -58,8 +65,6 @@
   </section>
 
 </div>
-<style>
-
 <!-- ===== Page-scoped CSS (move to styles.css later if you want) ===== -->
 <style>
   :root { --ps-w: 280px; }
@@ -120,7 +125,23 @@
     display: none !important;
   }
 
+  /* Push dashboard content on desktop only */
+  @media (min-width: 761px) {
+    body.sidebar-open .dash {
+      transform: translateX(var(--ps-w));
+      transition: transform 0.32s ease;
+    }
+  }
+
+  /* Mobile: overlay mode (no push) */
+  @media (max-width: 760px) {
+    :root { --ps-w: 85vw; }
+    body.sidebar-open .dash {
+      transform: none;
+    }
+  }
 </style>
+
 <!-- ===== Page-scoped JS ===== -->
 <script>
   function openSidebar() {

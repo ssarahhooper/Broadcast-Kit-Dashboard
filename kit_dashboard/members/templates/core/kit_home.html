@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Kit 1 Homepage{% endblock %}
+{% block title %}Kit Homepage{% endblock %}
 
 {% block content %}
 
@@ -34,7 +34,7 @@
 <!-- ===== Dashboard Content ===== -->
 <div class="dash">
   <section class="dash__main">
-    <h1 class="dash__title">Dashboard</h1>
+    <h1 class="dash__title">Kit {{ kit_id }}</h1>
 
     <div class="kit-grid">
       {% for pm in recent_postmortems %}
