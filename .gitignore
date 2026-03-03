@@ -1,22 +1,67 @@
-# Default ignored files
+# === Project / Editor ===
 /shelf/
 /workspace.xml
-
-# Editor-based HTTP Client requests
 /httpRequests/
-
-# Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-
-# Virtual envs
-.venv/
-venv/
+# IDEs
+.idea/
+.vscode/
+*.iml
 
 # macOS
 .DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtualenvs (common names)
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Virtualenv one level up (if your venv is outside repo root and you sometimes see ../venv)
+# NOTE: gitignore cannot ignore files outside repo root; handle with global gitignore if needed
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# Django
+*.sqlite3
+db.sqlite3
+local_settings.py
+media/
+staticfiles/
+static/
+
+# Environment / secrets
+.env
+.env.*
+*.env
+
+# Logs and runtime
+*.log
+*.pid
+*.cover
+coverage/
+htmlcov/
+
+# OS / Misc
+*.swp
+Thumbs.db
+
+# Data and fixtures (choose to ignore or commit)
+# If this file may contain PII or production data, keep it ignored:
+data.json
+
+# pip / site-packages noise
+# (these files were tracked earlier — we'll untrack them using git commands below)
