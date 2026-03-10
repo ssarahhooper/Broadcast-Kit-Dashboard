@@ -1,5 +1,5 @@
 databases:
-  - name: kit_dashboard
+  - name: kit-dashboard-db
     plan: free
     databaseName: kit_dashboard
     user: kit_dashboard
@@ -7,16 +7,18 @@ databases:
 services:
   - type: web
     plan: free
-    name: kit_dashboard
+    name: kit-dashboard
     runtime: python
-    buildCommand: './build.sh'
-    startCommand: 'python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker'
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn kit_dashboard.wsgi:application"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: kit_dashboard
+          name: kit-dashboard-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
+      - key: DEBUG
+        value: "False"
