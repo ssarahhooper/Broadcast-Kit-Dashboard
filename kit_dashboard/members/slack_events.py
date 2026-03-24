@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from slack_sdk.signature import SignatureVerifier
 
-from models import Kit, PostMortem
+from .models import Kit, PostMortem
 
 
 CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
