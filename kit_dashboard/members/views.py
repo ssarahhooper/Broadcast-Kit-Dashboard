@@ -74,3 +74,4 @@ def postmortem(request, pk):
 @login_required
 def calendar(request):
     return render(request, "Calendar/calendar.html")
+
