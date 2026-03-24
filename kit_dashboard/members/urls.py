@@ -14,7 +14,7 @@ urlpatterns = [
     path("postmortem/<int:pk>/", views.postmortem, name='postmortem'),
     path("kit/<int:kit_id>/", views.kit_home, name="kit_home"),
     path('calendar/', views.calendar, name='calendar'),
-    path('slack/events', slack_events.slack_events, name='slack_events'),
+    path('slack/events/', slack_events.slack_events, name='slack_events'),
 ]
 
 if settings.DEBUG:
