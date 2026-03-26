@@ -29,6 +29,7 @@ def parse_postmortem_message(message_text: str):
     kit_name = f"Kit {int(kit_match.group(1))}" if kit_match else "Unknown Kit"
     eic_name = eic_match.group(1).strip() if eic_match else "Unknown EIC"
     event_name = event_match.group(1).strip() if event_match else "Unknown Event"
+    event_name = re.sub(r"^:[a-z_]+:\s*", "", event_name)
 
     if date_match:
         try:
