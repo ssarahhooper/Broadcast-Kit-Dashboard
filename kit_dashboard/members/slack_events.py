@@ -22,7 +22,7 @@ def normalize_kit_name(name: str) -> str:
 
 def parse_postmortem_message(message_text: str):
     kit_match = re.search(r"Kit\s*0*(\d+)", message_text, re.IGNORECASE)
-    eic_match = re.search(r"EIC:\s*@?(\S+(?:\s+\S+)*)", message_text)
+    eic_match = re.search(r"EIC:\s*@?(.+?)(?:\n|$)", message_text)
     date_match = re.search(r"Games?:\s*([0-9/]+)", message_text)
     event_match = re.search(r"Post-?Mort(?:em)?\s+(.+?)(?:\n|Broadcast)", message_text, re.IGNORECASE)
 
@@ -72,6 +72,7 @@ def slack_events(request):
         return HttpResponse(status=200)
 
     text = (event.get("text") or "").strip()
+    text = text.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
     if not text:
         return HttpResponse(status=200)
 
@@ -82,7 +83,11 @@ def slack_events(request):
     is_root = (thread_ts is None) or (thread_ts == ts)
     if is_root and ("post-mort" in lower or "postmortem" in lower):
         kit_name, eic_name, event_name, event_date = parse_postmortem_message(text)
-        kit, _ = Kit.objects.get_or_create(name=kit_name)
+
+        try:
+            kit = Kit.objects.get(name=kit_name)
+        except Kit.DoesNotExist:
+            return HttpResponse(status=200)  # ignore if kit doesn't exist
 
         pm, created = PostMortem.objects.get_or_create(
             kit=kit,
