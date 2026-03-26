@@ -20,6 +20,8 @@ class PostMortem(models.Model):
     event_date = models.DateField()
     summary = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    slack_thread_ts = models.CharField(max_length=50,null=True, blank=True)
+    slack_first_reply_ts = models.CharField(max_length=50,null=True, blank=True)
 
     def __str__(self):
         return self.event_name
