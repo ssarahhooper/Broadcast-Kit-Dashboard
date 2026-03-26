@@ -21,11 +21,13 @@ def normalize_kit_name(name: str) -> str:
 
 
 def parse_postmortem_message(message_text: str):
-    kit_match = re.search(r"Kit\s*(\d+)", message_text, re.IGNORECASE)
-    event_match = re.search(r":thread:\s*(.+)", message_text)
-    date_match = re.search(r"Game:\s*([0-9/]+)", message_text)
+    kit_match = re.search(r"Kit\s*0*(\d+)", message_text, re.IGNORECASE)
+    eic_match = re.search(r"EIC:\s*@?(\S+(?:\s+\S+)*)", message_text)
+    date_match = re.search(r"Games?:\s*([0-9/]+)", message_text)
+    event_match = re.search(r"Post-?Mort(?:em)?\s+(.+?)(?:\n|Broadcast)", message_text, re.IGNORECASE)
 
-    kit_name = f"Kit {kit_match.group(1)}" if kit_match else "Unknown Kit"
+    kit_name = f"Kit {int(kit_match.group(1))}" if kit_match else "Unknown Kit"
+    eic_name = eic_match.group(1).strip() if eic_match else "Unknown EIC"
     event_name = event_match.group(1).strip() if event_match else "Unknown Event"
 
     if date_match:
@@ -37,7 +39,8 @@ def parse_postmortem_message(message_text: str):
     else:
         event_date = datetime.today().date()
 
-    return normalize_kit_name(kit_name), event_name, event_date
+    return normalize_kit_name(kit_name), eic_name, event_name, event_date
+
 
 @csrf_exempt
 def slack_events(request):
@@ -46,13 +49,11 @@ def slack_events(request):
 
     raw_body = request.body.decode("utf-8")
 
-    # Verify Slack signature
     # if not signature_verifier.is_valid_request(raw_body, request.headers):
-        # return HttpResponse(status=401)
+    #     return HttpResponse(status=401)
 
     payload = json.loads(raw_body)
 
-    # URL verification challenge
     if payload.get("type") == "url_verification":
         return JsonResponse({"challenge": payload.get("challenge")})
 
@@ -61,15 +62,12 @@ def slack_events(request):
 
     event = payload.get("event", {})
 
-    # Only message events
     if event.get("type") != "message":
         return HttpResponse(status=200)
 
-    # Ignore bot messages + edits (you can expand this list)
     if event.get("subtype") in {"bot_message", "message_changed", "message_deleted"}:
         return HttpResponse(status=200)
 
-    # Optional: restrict to a single channel
     if CHANNEL_ID and event.get("channel") != CHANNEL_ID:
         return HttpResponse(status=200)
 
@@ -77,29 +75,26 @@ def slack_events(request):
     if not text:
         return HttpResponse(status=200)
 
-    ts = event.get("ts")               # this message ts
-    thread_ts = event.get("thread_ts") # parent thread ts, if reply
-
+    ts = event.get("ts")
+    thread_ts = event.get("thread_ts")
     lower = text.lower()
 
-    # Root message: identify a postmortem post, and store the thread ts for later reply matching
     is_root = (thread_ts is None) or (thread_ts == ts)
     if is_root and ("post-mort" in lower or "postmortem" in lower):
-        kit_name, event_name, event_date = parse_postmortem_message(text)
+        kit_name, eic_name, event_name, event_date = parse_postmortem_message(text)
         kit, _ = Kit.objects.get_or_create(name=kit_name)
 
         pm, created = PostMortem.objects.get_or_create(
             kit=kit,
             event_name=event_name,
             defaults={
-                "name": f"{kit_name} Postmortem",
+                "name": eic_name,
                 "event_date": event_date,
                 "summary": "",
                 "slack_thread_ts": ts,
             },
         )
 
-        # If it already exists, keep it in sync and ensure thread ts is stored
         changed = False
         if pm.event_date != event_date:
             pm.event_date = event_date
@@ -112,13 +107,11 @@ def slack_events(request):
 
         return HttpResponse(status=200)
 
-    # Thread reply: save ONLY the first reply
     if thread_ts:
         pm = PostMortem.objects.filter(slack_thread_ts=thread_ts).first()
         if not pm:
             return HttpResponse(status=200)
 
-        # first reply only: if we already recorded one, ignore everything else
         if pm.slack_first_reply_ts:
             return HttpResponse(status=200)
 
