@@ -234,7 +234,9 @@ html, body {
 .postmort-card__info{
   color: rgba(255,255,255,.65);
   font-size: 25px;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  display: block;
 }
 .postmort-card__summary{
   color: rgba(255,255,255,.65);
