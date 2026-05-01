@@ -1,0 +1,1 @@
+web: gunicorn --chdir kit_dashboard kit_dashboard.wsgi
