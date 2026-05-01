@@ -63,3 +63,7 @@ data.json
 
 # pip / site-packages noise
 # (these files were tracked earlier — we'll untrack them using git commands below)
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
