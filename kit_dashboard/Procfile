@@ -1,0 +1,1 @@
+web: gunicorn kit_dashboard.wsgi
