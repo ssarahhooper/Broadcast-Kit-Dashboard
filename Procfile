@@ -1,1 +1,1 @@
-web: gunicorn --chdir kit_dashboard kit_dashboard.wsgi:application
+web: python kit_dashboard/manage.py collectstatic --noinput && gunicorn --chdir kit_dashboard kit_dashboard.wsgi:application
