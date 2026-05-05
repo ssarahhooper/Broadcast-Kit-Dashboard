@@ -1,0 +1,9 @@
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "cd kit_dashboard && python manage.py collectstatic --noinput && gunicorn kit_dashboard.wsgi:application",
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
